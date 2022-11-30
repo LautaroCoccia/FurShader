@@ -28,7 +28,7 @@ public class ShellTextureGeo : MonoBehaviour
     [Min(1)]
     public int layers = 1;
     public float heightOffset = 0;
-
+    public bool castShadows = false;
     private int kernelID =1;
     private int threadGroupSize;
 
@@ -53,7 +53,6 @@ public class ShellTextureGeo : MonoBehaviour
         mesh = GetComponent<MeshFilter>().sharedMesh;
         meshRenderer = GetComponent<MeshRenderer>();
         triangleCount = mesh.triangles.Length / 3; //matriz de indices por cada triangulo por eso se divide por 3
-
         SetupBuffers();
         SetupData();
         GenerateGeometry();
@@ -64,9 +63,14 @@ public class ShellTextureGeo : MonoBehaviour
     }
     private void OnValidate()
     {
-        //SetupBuffers();
-        //SetupData();
-        //GenerateGeometry();
+        if(Application.isPlaying)
+        {
+            initialized = false;
+            SetupBuffers();
+            SetupData();
+            GenerateGeometry();
+
+        }
     }
     private void SetupBuffers()
     {
@@ -161,7 +165,7 @@ public class ShellTextureGeo : MonoBehaviour
                 0,
                 null,
                 null,
-                UnityEngine.Rendering.ShadowCastingMode.Off,
+                castShadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off,
                 true,
                 gameObject.layer);
         }
