@@ -1,0 +1,81 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel ShellTextureGeo
+
+struct InputVertex
+{
+    float3 position;
+    float3 normal;
+    float2 uv;
+};
+
+struct InputTriangle
+{
+    InputVertex inputVertices[3];
+};
+struct DrawVertex
+{
+    float3 position;
+    float3 normal;
+    float2 uv;
+    float4 color;
+};
+
+struct DrawTriangle
+{
+    DrawVertex drawVertices[3];
+};
+struct IndirectArgs
+{
+    uint numVerticesPerInstance;
+    uint numInstances;
+    uint startVertexIndex;
+    uint startInstanceIndex;
+};
+
+StructuredBuffer<InputTriangle> _InputTrianglesBuffer; 
+AppendStructuredBuffer<DrawTriangle> _DrawTrianglesBuffer;
+RWStructuredBuffer<IndirectArgs> _IndirectArgsBuffer;
+
+int _TriangleCount;
+float4x4 _LocalToWorld;
+int _Layers;
+float _HeightOffset;
+
+DrawVertex GetVertex(float3 position, float3 normal, float2 uv, float4 color)
+{
+    DrawVertex output = (DrawVertex) 0;
+    output.position = mul(_LocalToWorld, float4(position,1.0)).xyz;
+    output.normal = mul(_LocalToWorld, float4(normal,1.0)).xyz;
+    output.uv = uv;
+    output.color = color;
+    return output;
+
+}
+[numthreads(64,1,1)]
+void ShellTextureGeo(uint3 id : SV_DispatchThreadID)
+{
+    if ((int)id.x >= _TriangleCount)
+    {
+        return;
+    }
+    InputTriangle inputTriangle = _InputTrianglesBuffer[id.x];
+    
+    DrawTriangle tri = (DrawTriangle) 0;
+    for (int i = 0; i < _Layers; i++)
+    {
+        DrawVertex drawVertices[3];
+        for (int j= 0; j < 3; i++)
+        {
+            float factor = (float)i / (float)_Layers;
+            float3 position = inputTriangle.inputVertices[j].position + inputTriangle.inputVertices[j].normal * _HeightOffset * factor;
+            drawVertices[j] = GetVertex(position, inputTriangle.inputVertices[j].normal, inputTriangle.inputVertices[j].uv, float4(factor, 0, 0, 1.0));
+
+            tri.drawVertices[0] = drawVertices[0];
+            tri.drawVertices[1] = drawVertices[1];
+            tri.drawVertices[2] = drawVertices[2];
+        }
+        _DrawTrianglesBuffer.Append(tri);
+    }
+    InterLockedAdd(_IndirectArgsBuffer[0].numVerticesPerInstance, 3 * _Layers);
+
+}

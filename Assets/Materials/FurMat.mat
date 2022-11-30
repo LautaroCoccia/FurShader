@@ -62,15 +62,15 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0
-    - _CutoffEnd: 0
+    - _CutoffEnd: 0.439
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _EdgeFade: 1
-    - _FurLength: 0.041
+    - _EdgeFade: 0.127
+    - _FurLength: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _GravityStrength: 0.25
+    - _GravityStrength: 0.656
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
