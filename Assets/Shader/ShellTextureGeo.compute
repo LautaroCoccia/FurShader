@@ -60,22 +60,24 @@ void ShellTextureGeo(uint3 id : SV_DispatchThreadID)
     {
         return;
     }
+       
     InputTriangle inputTriangle = _InputTrianglesBuffer[id.x];
     
     DrawTriangle tri = (DrawTriangle) 0;
+
     for (int i = 0; i < _Layers; i++)
     {
         DrawVertex drawVertices[3];
         
         float factor = (float)i / (float)_Layers;
-        float3 position = inputTriangle.vertex0.position + inputTriangle.vertex0.normal * _HeightOffset * factor;
-        drawVertices[0] = GetVertex(position, inputTriangle.vertex0.normal, inputTriangle.vertex0.uv, float4(factor, 0, 0, 1.0));
+        float3 position0 = inputTriangle.vertex0.position + inputTriangle.vertex0.normal * _HeightOffset * factor;
+        drawVertices[0] = GetVertex(position0, inputTriangle.vertex0.normal, inputTriangle.vertex0.uv, float4(factor, 0, 0, 1.0));
 
-        float3 position = inputTriangle.vertex1.position + inputTriangle.vertex1.normal * _HeightOffset * factor;
-        drawVertices[1] = GetVertex(position, inputTriangle.vertex1.normal, inputTriangle.vertex1.uv, float4(factor, 0, 0, 1.0));
+        float3 position1 = inputTriangle.vertex1.position + inputTriangle.vertex1.normal * _HeightOffset * factor;
+        drawVertices[1] = GetVertex(position1, inputTriangle.vertex1.normal, inputTriangle.vertex1.uv, float4(factor, 0, 0, 1.0));
 
-        float3 position = inputTriangle.vertex2.position + inputTriangle.vertex2.normal * _HeightOffset * factor;
-        drawVertices[2] = GetVertex(position, inputTriangle.vertex2.normal, inputTriangle.vertex2.uv, float4(factor, 0, 0, 1.0));
+        float3 position2 = inputTriangle.vertex2.position + inputTriangle.vertex2.normal * _HeightOffset * factor;
+        drawVertices[2] = GetVertex(position2, inputTriangle.vertex2.normal, inputTriangle.vertex2.uv, float4(factor, 0, 0, 1.0));
         
         tri.drawVertices[0] = drawVertices[0];
         tri.drawVertices[1] = drawVertices[1];

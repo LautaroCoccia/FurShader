@@ -29,7 +29,7 @@ public class ShellTextureGeo : MonoBehaviour
     public int layers = 1;
     public float heightOffset = 0;
 
-    private int kernelID;
+    private int kernelID =1;
     private int threadGroupSize;
 
     private int[] indirectArgs = new int[] { 0, 1, 0, 0 };
