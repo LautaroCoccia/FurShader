@@ -69,7 +69,6 @@ public class ShellTextureGeo : MonoBehaviour
             SetupBuffers();
             SetupData();
             GenerateGeometry();
-
         }
     }
     private void SetupBuffers()

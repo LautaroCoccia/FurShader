@@ -19,17 +19,22 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _DisplacementTexture:
+        m_Texture: {fileID: 2800000, guid: 0b26b5bb275a641448d7cfbcaa464ab8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 1, y: 1}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 0b26b5bb275a641448d7cfbcaa464ab8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Cutoff: 0
+    - _Cutoff: 0.095
     - _CutoffEnd: 1
-    - _EdgeFade: 0.038
-    - _FurLength: 0.186
+    - _DisplacementAmount: 13
+    - _EdgeFade: 0.788
+    - _FurLength: 0.486
     - _Glossiness: 0.364
-    - _GravityStrength: 0.25
+    - _GravityStrength: 0
     - _Metallic: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
